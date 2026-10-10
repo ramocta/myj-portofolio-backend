@@ -18,10 +18,17 @@ return new class extends Migration
             $table->string('image_profil')->nullable();
             $table->text('deskripsi')->nullable();
             
-            // Foreign Key ke tabel jurusan
+            // Tambahan: Foreign Key Prodi
+            $table->foreignId('id_prodi')
+                  ->constrained('prodi', 'id_prodi')
+                  ->onDelete('cascade');
+
+                  
+            // Foreign Key Jurusan
             $table->foreignId('id_jurusan')
                   ->constrained('jurusan', 'id_jurusan')
                   ->onDelete('cascade');
+
 
             $table->timestamps();
         });
