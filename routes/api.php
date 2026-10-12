@@ -3,12 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-*/
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 
 // ==========================================
 // ENDPOINT PUBLIK (Tidak Perlu Token Login)
@@ -24,7 +20,6 @@ Route::post('/register', [AuthController::class, 'register']);
 // 3. Login
 Route::post('/login', [AuthController::class, 'login']);
 
-
 // ==========================================
 // ENDPOINT TERPROTEKSI (Wajib pakai Bearer Token)
 // ==========================================
@@ -37,10 +32,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', function (Request $request) {
         return response()->json([
             'status' => 'success',
-            'data'   => $request->user()->load('jurusan') // load relasi jurusan
+            'data'   => $request->user()->load('jurusan')
         ], 200);
     });
 
-    // Nanti Anda bisa menambahkan endpoint untuk tabel Project, Teknologi, Kategori di sini
-    // Route::get('/projects', [ProjectController::class, 'index']);
+    // Rute Update Profil (Gambar & Deskripsi) dan Hapus Foto Profil
+    Route::post('/profile/update', [ProfileController::class, 'updateProfile']); 
+    Route::delete('/profile/image', [ProfileController::class, 'deleteProfileImage']);
+
+    // Rute CRUD Project (Hanya bisa diakses jika sudah login)
+    Route::post('/projects', [ProjectController::class, 'store']); 
+    Route::post('/projects/{id}', [ProjectController::class, 'update']); // Update (Pakai POST agar upload file mudah)
+    Route::delete('/projects/{id}', [ProjectController::class, 'destroy']); // Delete
 });
