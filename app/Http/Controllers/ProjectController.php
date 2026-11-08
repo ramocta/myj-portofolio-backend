@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Kategori;
+use App\Models\Teknologi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -166,6 +168,32 @@ class ProjectController extends Controller
         return response()->json([
             'status'  => 'success',
             'message' => 'Project berhasil dihapus'
+        ], 200);
+    }
+
+    // ==========================================
+    // 6. GET ALL KATEGORI
+    // ==========================================
+    public function getKategori()
+    {
+        $kategori = Kategori::all();
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $kategori
+        ], 200);
+    }
+
+    // ==========================================
+    // 7. GET ALL TEKNOLOGI
+    // ==========================================
+    public function getTeknologi()
+    {
+        $teknologi = Teknologi::all();
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $teknologi
         ], 200);
     }
 }
